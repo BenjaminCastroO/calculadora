@@ -1,3 +1,52 @@
 body {
+  
+  background-color: #b8d0eb;
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+
+background-size: cover;
+background-repeat: repeat;
 }
+.row{
+  margin-left: 1%;
+  height: 65px;
+}
+button{
+  height: 20px;
+ margin: 0px;
+}
+
+.container {
+  padding-left: 0%;
+}
+.pushy__btn{
+  height: 20px;
+ margin: 0px;
+width: 100%;
+font-family: monospace;
+}
+
+.form-control{
+  background-color: #00ff9f;
+  color: #0b0b0b;
+  border: solid #d600ff;
+  font-family: monospace;
+  text-align: right;
+}
+
+
+
+
+/* ESTE ES EL CODIGO DEL TITULO */
+
+@import url('https://fonts.googleapis.com/css?family=Playfair+Display:900');
+.tit {
+  fill: #b298dc;
+  filter: url('#money');
+  font-family: 'Playfair Display', 'Georgia', serif;
+  font-size: 50px;
+  font-weight: 100;
+  padding: none;
+  margin: none;
+  height: 100px;
+}
+
