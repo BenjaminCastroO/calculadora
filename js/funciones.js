@@ -38,5 +38,25 @@ var bIgual = document.getElementById('bequal');
 bIgual.addEventListener('click', function () { igual() });
 
 function igual() {
+
+if (tresultado.value.includes("^"))
+{
+  tresultado.value = tresultado.value.replace("^","**")
+}
+if (tresultado.value.includes("√"))
+{
+  var start = tresultado.value.indexOf("√")
+  var end1 = tresultado.value.indexOf("+",start)
+  var end2 = tresultado.value.indexOf("-",start)
+  var end3 = tresultado.value.indexOf("*",start)
+  var end4 = tresultado.value.indexOf("/",start)
+  var end = Math.min(end1, end2, end3, end4)
+  if (end==-1)
+  {
+    end = tresultado.value.length;
+  }
+  tresultado.value = tresultado.value.replace("√","(")
+  tresultado.value = tresultado.value.substring(0, end) + ")**(1/2)" + tresultado.value.substring(end);
+}
   tresultado.value = eval(tresultado.value)
 }
