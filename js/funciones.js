@@ -60,3 +60,23 @@ if (tresultado.value.includes("√"))
 }
   tresultado.value = eval(tresultado.value)
 }
+const bequalBtn = document.querySelector("#bequal");
+bequalBtn.addEventListener("click", () => {
+  const resultadoInput = document.querySelector("#resultado");
+  const operacion = resultadoInput.value;
+
+  // Validar que la operación tenga un formato matemáticamente válido
+  const operacionValida = /^[0-9+\-*/().\s]+$/.test(operacion);
+
+  if (operacionValida) {
+    try {
+      // Evaluar la operación matemática
+      const resultado = eval(operacion);
+      resultadoInput.value = resultado;
+    } catch (error) {
+      resultadoInput.value = "Error";
+    }
+  } else {
+    resultadoInput.value = "Error";
+  }
+});
