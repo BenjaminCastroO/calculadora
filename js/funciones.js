@@ -33,11 +33,31 @@ function clean() {
   tresultado.value = '';
 }
 
+/* codigo boton punto */
+var bDot = document.getElementById('bdot');
+bDot.addEventListener('click', function () { putDot() });
+
+function putDot() {
+  tresultado.value += '.';
+}
+
+/* codigo boton backspace (borra ultimo caracter) */
+var bBack = document.getElementById('bback');
+bBack.addEventListener('click', function () { backspace() });
+
+function backspace() {
+  tresultado.value = tresultado.value.slice(0, -1);
+}
+
 /* codigo del botón igual */
 var bIgual = document.getElementById('bequal');
 bIgual.addEventListener('click', function () { igual() });
 
 function igual() {
+
+  let etiquetaAudio = document.createElement("audio")
+      etiquetaAudio.setAttribute("src", "../bequal-sound.wav")
+      etiquetaAudio.play()
 
   //código de potencia
 if (tresultado.value.includes("^"))
@@ -72,7 +92,7 @@ if (tresultado.value.includes("√"))
   tresultado.value = tresultado.value.substring(0, end) + ")**(1/2)" + tresultado.value.substring(end);
 }
 console.log(tresultado.value);
-  tresultado.value = eval(tresultado.value)
+tresultado.value = eval(tresultado.value);
 }
 const bequalBtn = document.querySelector("#bequal");
 bequalBtn.addEventListener("click", () => {
