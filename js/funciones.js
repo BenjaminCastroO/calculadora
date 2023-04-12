@@ -49,10 +49,28 @@ function backspace() {
   tresultado.value = tresultado.value.slice(0, -1);
 }
 
+/* asignar variable ans*/
+var ans = "";
+
 /* codigo del botón igual */
 var bIgual = document.getElementById('bequal');
-bIgual.addEventListener('click', function () { igual() });
+bIgual.addEventListener('click', function () { igual()
 
+  var resultadoAns = document.getElementById("resultado").value;
+  
+   
+  if (resultadoAns !== "Error"){
+  
+   ans = resultadoAns;
+   
+  };
+
+});// Obtener el valor del input con id "resultado"
+
+/* Obtener Resultado Previo ANS*/
+document.getElementById("btnans").addEventListener("click", function() {
+  document.getElementById("resultado").value = ans;
+});
 function igual() {
 
   let etiquetaAudio = document.createElement("audio")
@@ -114,3 +132,5 @@ bequalBtn.addEventListener("click", () => {
     resultadoInput.value = "Error";
   }
 });
+
+
