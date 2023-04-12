@@ -1,60 +1,103 @@
-var tresultado = document.getElementById('resultado');
+$(document).ready(function () {
+  var tresultado = document.getElementById('resultado');
 
-/* codigo de botones numéricos */
+  function addClickSound() {
+    let etiquetaAudio = $("<audio></audio>");
+    etiquetaAudio.attr("src", "../click.ogg");
+    etiquetaAudio[0].play();
+  }  
+  function addEqualSound() {
+    let etiquetaAudio = $("<audio></audio>");
+    etiquetaAudio.attr("src", "../bequal-sound.wav");
+    etiquetaAudio[0].play();
+  }
+  /* codigo de botones numéricos */
 var botonesNum = document.getElementsByClassName('pushy__btn pushy__btn--green');
 
-for (let i = 0; i < botonesNum.length; i++) {
-  const element = botonesNum[i];
-  element.addEventListener('click', function () { putNumber(element.innerText) });
-}
+  for (let i = 0; i < botonesNum.length; i++) {
+    const element = botonesNum[i];
+    element.addEventListener("click", function () {
+      addClickSound();
+      putNumber(element.innerText);
+    });
+  }
 
-function putNumber(valor) {
-  tresultado.value += valor;
-}
+  function putNumber(valor) {
+    tresultado.value += valor;
+  }
 
-/* var botonesAccion = document.getElementsByClassName('btn btn-secondary');*/
+  /* var botonesAccion = document.getElementsByClassName('btn btn-secondary');*/
 var botonesOperacion = document.getElementsByClassName('pushy__btn pushy__btn--red p-4');
 
-for (let i = 0; i < botonesOperacion.length; i++) {
-  const element = botonesOperacion[i];
-  element.addEventListener('click', function () { putOperador(element.innerText) });
-}
+  for (let i = 0; i < botonesOperacion.length; i++) {
+    const element = botonesOperacion[i];
+    element.addEventListener("click", function () {
+      addClickSound();
+      putOperador(element.innerText);
+    });
+  }
 
-function putOperador(op) {
-  tresultado.value += op;
-}
+  function putOperador(op) {
+    tresultado.value += op;
+  }
 
+  /* codigo del botón limpiar */
+  $("#bclean").on("click", function () {
+   addClickSound();
+   clean();
+  });
 
-/* codigo del botón limpiar */
-var bLimpiar = document.getElementById('bclean');
-bLimpiar.addEventListener('click', function () { clean() });
+  function clean() {
+    tresultado.value = "";
+  }
+ 
+  /* codigo boton punto */
+  $("#bdot").on("click", function () {
+    addClickSound();
+    putDot();
+  });
+  
 
-function clean() {
-  tresultado.value = '';
-}
+  function putDot() {
+    tresultado.value += ".";
+  }
 
-/* codigo boton punto */
-var bDot = document.getElementById('bdot');
-bDot.addEventListener('click', function () { putDot() });
+  /* codigo boton backspace (borra ultimo caracter) */
+  $("#bback").on("click", function () {
+    addClickSound();
+    backspace();
+  });
 
-function putDot() {
-  tresultado.value += '.';
-}
+  function backspace() {
+    tresultado.value = tresultado.value.slice(0, -1);
+  }
 
-/* codigo boton backspace (borra ultimo caracter) */
-var bBack = document.getElementById('bback');
-bBack.addEventListener('click', function () { backspace() });
+  /* codigo del botón porcentaje */
+  $("#bpercent").on("click", function () {
+    addClickSound();
+    putPercent();
+  });
 
-function backspace() {
-  tresultado.value = tresultado.value.slice(0, -1);
-}
+  function putPercent() {
+    let value = tresultado.value;
+    if (value.length > 0) {
+      let lastChar = value.charAt(value.length - 1);
+      if (lastChar === "%") {
+        return;
+      } else {
+        tresultado.value = value + "%";
+      }
+    }
+  }
 
 /* asignar variable ans*/
 var ans = "";
 
-/* codigo del botón igual */
-var bIgual = document.getElementById('bequal');
-bIgual.addEventListener('click', function () { igual()
+  /* codigo del botón igual */
+  $("#bequal").on("click", function () {
+    addEqualSound();
+    igual();
+ 
 
   var resultadoAns = document.getElementById("resultado").value;
   
@@ -63,7 +106,7 @@ bIgual.addEventListener('click', function () { igual()
   
    ans = resultadoAns;
    
-  };
+    };
 
 });// Obtener el valor del input con id "resultado"
 
@@ -73,17 +116,12 @@ document.getElementById("btnans").addEventListener("click", function() {
 });
 function igual() {
 
-  let etiquetaAudio = document.createElement("audio")
-      etiquetaAudio.setAttribute("src", "../bequal-sound.wav")
-      etiquetaAudio.play()
-
-  //código de potencia
+    //código de potencia
 if (tresultado.value.includes("^"))
 {
   tresultado.value = tresultado.value.replace("^","**")
 }
-
-//Código de radical
+    //Código de radical
 if (tresultado.value.includes("√")) {
   var numRaiz = contar(tresultado.value , "√");
   
@@ -151,8 +189,26 @@ if (tresultado.value.includes("√")) {
 }
 }
 console.log(tresultado.value);
-tresultado.value = eval(tresultado.value);
-}
+
+    // calcular porcentajes
+  const regex = /(\d+(?:\.\d+)?)\s*([-+*/])\s*(\d+(?:\.\d+)?%)/g;
+  let operacion = tresultado.value.replace(regex, (match, p1, p2, p3) => {
+    const porcentaje = parseFloat(p3.slice(0, -1)) / 100;
+    let valorPorcentaje;
+    if (p2 === "*") {
+      valorPorcentaje = porcentaje;
+    } else {
+      valorPorcentaje = parseFloat(p1) * porcentaje;
+    }
+    return `${p1} ${p2} ${valorPorcentaje}`;
+  });
+
+  try {
+    tresultado.value = eval(operacion);
+  } catch (error) {
+    tresultado.value = "Error";
+  }
+  }
 const bequalBtn = document.querySelector("#bequal");
 bequalBtn.addEventListener("click", () => {
   const resultadoInput = document.querySelector("#resultado");
@@ -172,6 +228,7 @@ bequalBtn.addEventListener("click", () => {
   } else {
     resultadoInput.value = "Error";
   }
+  });
 });
 
 
