@@ -50,3 +50,37 @@ font-family: monospace;
   height: 100px;
 }
 
+/*animacion de header*/
+
+.retro {
+  background: linear-gradient(
+    #0000ff 15%,
+    #aaffff 35%,
+    #ccffff 45%,
+    #000011 55%,
+    #000000 52%,
+    #000044 60%,
+    #000066 70%,
+    #000099 80%,
+    #0000ff 85%
+  );
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  font-size: 50px;
+  font-family: 'Playfair Display', 'Georgia', serif;
+  -webkit-text-stroke: 2px #a8a8a8;
+  animation: sombra 2s infinite;
+}
+
+@keyframes sombra {
+  0% {
+    filter: drop-shadow(10px 10px 10px #ff0000);
+  }
+  50% {
+    filter: drop-shadow(10px 10px 10px #000000);
+  }
+  100% {
+    filter: drop-shadow(10px 10px 10px #ff0000);
+  }
+}

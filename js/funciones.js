@@ -90,13 +90,31 @@ var botonesOperacion = document.getElementsByClassName('pushy__btn pushy__btn--r
     }
   }
 
+/* asignar variable ans*/
+var ans = "";
+
   /* codigo del botón igual */
   $("#bequal").on("click", function () {
     addEqualSound();
     igual();
-  });
+ 
 
-  function igual() {
+  var resultadoAns = document.getElementById("resultado").value;
+  
+   
+  if (resultadoAns !== "Error"){
+  
+   ans = resultadoAns;
+   
+    };
+
+});// Obtener el valor del input con id "resultado"
+
+/* Obtener Resultado Previo ANS*/
+document.getElementById("btnans").addEventListener("click", function() {
+  document.getElementById("resultado").value = ans;
+});
+function igual() {
 
     //código de potencia
 if (tresultado.value.includes("^"))
@@ -171,3 +189,5 @@ bequalBtn.addEventListener("click", () => {
   }
   });
 });
+
+
