@@ -84,30 +84,71 @@ if (tresultado.value.includes("^"))
 }
 
 //Código de radical
-if (tresultado.value.includes("√"))
-{
-  var end1 = null
-  var end2 = null
-  var end3 = null
-  var end4 = null
-  var start = tresultado.value.indexOf("√")
-  if (tresultado.value.indexOf("+",start)!=-1){var end1 = tresultado.value.indexOf("+",start)} else end1 = tresultado.value.length
-  if (tresultado.value.indexOf("-",start)!=-1){var end2 = tresultado.value.indexOf("-",start)} else end2 = tresultado.value.length
-  if (tresultado.value.indexOf("*",start)!=-1){var end3 = tresultado.value.indexOf("*",start)} else end3 = tresultado.value.length
-  if (tresultado.value.indexOf("/",start)!=-1){var end4 = tresultado.value.indexOf("/",start)} else end4 = tresultado.value.length
-  console.log(end1);
-  console.log(end2);
-  console.log(end3);
-  console.log(end4);
+if (tresultado.value.includes("√")) {
+  var numRaiz = contar(tresultado.value , "√");
   
-  var end = Math.min(end1, end2, end3, end4)
-  if (end==null || end==-1 || end==0)
-  {
-    end = tresultado.value.length;
+  for (let i = 0; i < numRaiz; i++) {
+    //console.log(tresultado.value);
+  var start = tresultado.value.indexOf("√");
+  cierreParentesis(tresultado.value.substring(start));
+
+  //si raíz no usa paréntesis.
+  if (cierre == -2) {
+    //console.log("la raíz no usa paréntesis");
+    var end1 = null;
+    var end2 = null;
+    var end3 = null;
+    var end4 = null;
+    var end5 = null;
+    var start = tresultado.value.indexOf("√");
+    if (tresultado.value.indexOf("+", start) != -1) {
+      var end1 = tresultado.value.indexOf("+", start);
+    } else end1 = tresultado.value.length;
+    if (tresultado.value.indexOf("-", start) != -1) {
+      var end2 = tresultado.value.indexOf("-", start);
+    } else end2 = tresultado.value.length;
+    if (tresultado.value.indexOf("*", start) != -1) {
+      var end3 = tresultado.value.indexOf("*", start);
+    } else end3 = tresultado.value.length;
+    if (tresultado.value.indexOf("/", start) != -1) {
+      var end4 = tresultado.value.indexOf("/", start);
+    } else end4 = tresultado.value.length;
+    if (tresultado.value.indexOf(")", start) != -1) {
+      var end5 = tresultado.value.indexOf("/", start);
+    } else end5 = tresultado.value.length;
+
+    cierre = Math.min(end1, end2, end3, end4, end5);
+    //console.log("aca cierre es " + cierre);
+    if (cierre == null || cierre == -1 || cierre == 0) {
+      cierre = tresultado.value.length;
+    }
+   
+    tresultado.value = tresultado.value.replace("√", "((");
+  tresultado.value =
+    tresultado.value.substring(0, cierre+1) +
+    ")**(1/2))" +
+    tresultado.value.substring(cierre + 1);
   }
-  console.log(end);
-  tresultado.value = tresultado.value.replace("√","(")
-  tresultado.value = tresultado.value.substring(0, end) + ")**(1/2)" + tresultado.value.substring(end);
+
+  //si raíz no cierra paréntesis inicial.
+  else if (cierre == -1) {
+   // console.log("la raíz no cierra paréntesis inicial");
+    tresultado.value = tresultado.value + ")";
+    cierre = tresultado.value.length;
+    tresultado.value = tresultado.value.replace("√", "((");
+  tresultado.value =
+    tresultado.value.substring(0, cierre+1) +
+    ")**(1/2))" +
+    tresultado.value.substring(cierre + 1);
+  }
+  else { 
+    tresultado.value = tresultado.value.replace("√", "((");
+  tresultado.value =
+    tresultado.value.substring(0, cierre + start+1) +
+    ")**(1/2))" +
+    tresultado.value.substring(cierre + start + 1);}
+ 
+}
 }
 console.log(tresultado.value);
 tresultado.value = eval(tresultado.value);
@@ -134,3 +175,51 @@ bequalBtn.addEventListener("click", () => {
 });
 
 
+//necesario para raíces y paréntesis anidados
+function cierreParentesis(expresion) {
+  var parenOk = false;
+  let parenArray = [];
+
+  for (let i = 0; i < expresion.length; i++) {
+    const char = expresion[i];
+   // console.log(parenArray.length);
+    if (char === "(") {
+      parenArray.push(i);
+    } else if (char === ")") {
+      const ultimoAbreParen = parenArray[parenArray.length - 1];
+
+      if (ultimoAbreParen !== undefined) {
+        parenArray.pop();
+
+        if (ultimoAbreParen === expresion.indexOf("(")) {
+          cierre = i;
+          parenOk = true;
+          break;
+        }
+      }
+    } else {
+      if (expresion.charAt(1)!=="(")
+      {cierre = -1;
+     // console.log("sdf");
+      break;
+    }
+    cierre = -1;
+    }
+  }
+  if (parenArray == 0 && parenOk == false) {
+    cierre = -2;
+  }
+}
+
+function contar(texto, caracter) {
+  var cont = 0;
+  for (var i = 0; i < texto.length; i++) {
+    if (texto[i] == caracter) {
+      cont = cont + 1;
+      //console.log(cont);
+    }
+  }
+  return cont;
+}
+
+var cierre = null;
